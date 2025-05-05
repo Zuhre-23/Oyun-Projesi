@@ -1,4 +1,5 @@
 import pygame
+from level import Level
 GENİSLİK , YUKSEKLİK = 1000,700
 FPS=60
 
@@ -11,6 +12,8 @@ class Game:
         self.arkaplan = pygame.image.load("Background.png")
         self.arkaplan_boyut = pygame.transform.scale(self.arkaplan,size=(GENİSLİK,YUKSEKLİK))
 
+        self.level=Level()
+
     def run(self):
         oyun_acik = True
         while oyun_acik :
@@ -20,4 +23,6 @@ class Game:
                     oyun_acik = False
 
             self.pencere.blit(self.arkaplan_boyut,(0,0))
+
+            self.level.draw(self.pencere)
             pygame.display.update()

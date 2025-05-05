@@ -2,7 +2,7 @@ import pygame
 from animation_loader import load_images
 
 class Player:
-    def __innit__(self, x, y, level):
+    def __init__(self, x, y, level):
         self.rect =pygame.Rect(x, y, 50, 80)
         self.level =level
         self.current_frame =0
@@ -32,5 +32,4 @@ class Player:
 
 
 
-            }
-        }
+         
