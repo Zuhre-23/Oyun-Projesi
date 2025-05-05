@@ -1,12 +1,23 @@
 import pygame
+GENİSLİK , YUKSEKLİK = 1000,700
+FPS=60
 
-pygame.init()
+class Game:
+    def __init__(self):
+        self.pencere = pygame.display.set_mode((GENİSLİK, YUKSEKLİK))
+        pygame.display.set_caption("OYUN")
+        self.clock = pygame.time.Clock()
 
-window=pygame.display.set_mode((800,600))
-flag=True
+        self.arkaplan = pygame.image.load("Background.png")
+        self.arkaplan_boyut = pygame.transform.scale(self.arkaplan,size=(GENİSLİK,YUKSEKLİK))
 
-while flag:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            flag = False 
+    def run(self):
+        oyun_acik = True
+        while oyun_acik :
+            self.clock.tick(FPS)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    oyun_acik = False
 
+            self.pencere.blit(self.arkaplan_boyut,(0,0))
+            pygame.display.update()
