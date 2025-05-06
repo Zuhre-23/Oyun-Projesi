@@ -12,6 +12,8 @@ class Game:
         self.arkaplan = pygame.image.load("Background.png")
         self.arkaplan_boyut = pygame.transform.scale(self.arkaplan,size=(GENİSLİK,YUKSEKLİK))
 
+        self.arkaplan_2 = pygame.image.load("Background_2.png")
+        self.arkaplan_2_boyut = pygame.transform.scale(self.arkaplan_2,size=(GENİSLİK,YUKSEKLİK))
         self.level=Level()
 
     def run(self):
@@ -23,6 +25,10 @@ class Game:
                     oyun_acik = False
 
             self.pencere.blit(self.arkaplan_boyut,(0,0))
+            self.level.update_door_animation()
 
-            self.level.draw(self.pencere)
-            pygame.display.update()
+            self.draw()
+    
+    def draw(self):
+        self.level.draw(self.pencere)
+        pygame.display.update()
