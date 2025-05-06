@@ -10,6 +10,10 @@ class Level:
             pygame.Rect(340,300,100,100),
             pygame.Rect(420,300,100,100),
         ]
+        self.gems = [
+            pygame.Rect(100,500,32,32),
+            pygame.Rect(100,600,32,32)
+        ]
 
         self.platform_1 = pygame.image.load("Platform.PNG")
         self.active_evren = 1
@@ -17,12 +21,13 @@ class Level:
         self.yatay_hareket_yönü = 1
         self.hareketli_platform_karakter =False
 
-        self.door = pygame.Rect(900,550,150,300)
+        self.door = pygame.Rect(800,450,150,300)
         self.door_frames = load_images("animations//door","portal1_frame",6)
         self.door_current_frame = 0
         self.door_frame_timer = 0
-        
 
+        self.gem = pygame.image.load("gem.PNG")
+        
 
     def evren_degistir(self):
         if self.active_evren == 1:
@@ -56,4 +61,6 @@ class Level:
             current_frame = self.door_frames[self.door_current_frame]
             surface.blit(current_frame,self.door.topleft)
 
+        for gem in self.gems:
+            surface.blit(self.gem,gem.topleft)
         
