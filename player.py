@@ -2,7 +2,7 @@ import pygame
 from animation_loader import load_images
 
 class Player:
-    def __innit__(self,x,y,level):
+    def __init__(self,x,y,level):
         self.rect=pygame.Rect(x,y,50,80)
         self.level=level
         self.current_frame=0
@@ -25,19 +25,9 @@ class Player:
             'run' : load_images(f"{folder}/run", "run" ,10),
             'jump' : load_images(f"{folder}/jump_full", "jump" ,22),
             'roll' : load_images(f"{folder}/roll", "roll",8),
-            'death' :load_imager(f"{folder}/death" , "death", 19),
+            'death' :load_images(f"{folder}/death" , "death", 19),
 
                     }
-    def update ()
-    
-
-
-
-
-
-
-
-
 
 
 
@@ -69,7 +59,7 @@ class Player:
     
 
 
-    def check_horizontal_collisions()
+    
 
 
 
@@ -79,7 +69,7 @@ class Player:
 
 
 
-    def check_vertical_collisions()
+    
 
 
 
@@ -129,9 +119,9 @@ class Player:
         if self.is_running:
             return 'run'
         if self.is_dead:
-            return 'death'
-        
-        returun 'idle'
+            return 'death'       
+        return 'idle'
+    
     def die(self):
         if not self.is_dead:
             self.is_dead = True

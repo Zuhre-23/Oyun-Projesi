@@ -101,5 +101,6 @@ class Game:
         else:
             self.pencere.blit(self.arkaplan_2_boyut, (0, 0))
         
+        self.player.draw(self.pencere)
         self.level.draw(self.pencere)
         pygame.display.update()
