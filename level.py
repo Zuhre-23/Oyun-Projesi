@@ -21,9 +21,12 @@ class Level:
         self.platform_1 = pygame.image.load("Platform.PNG")
         self.platform_2 = pygame.image.load("Platform_2.PNG")
         self.active_evren = 1
+
         self.yatay_hareketli_platform =pygame.Rect(500, 550, 120, 20)
         self.yatay_hareket_yönü = 1
-        self.hareketli_platform_karakter =False       
+        self.hareketli_platform_karakter =False
+        self.dikey_hareketli_platform = pygame.Rect(80,50,50,50) 
+        self.dikey_hareket_yönü = 1     
 
 
         self.door = pygame.Rect(800,450,150,300)
@@ -60,12 +63,19 @@ class Level:
                 self.door_frame_timer = 0
 
     def update(self,player):
+        #YATAY HAREKETLİ
         self.yatay_hareketli_platform.x += 2 * self.yatay_hareket_yönü
         if self.yatay_hareketli_platform.left <= 100 or self.yatay_hareketli_platform.right >= 700:
             self.yatay_hareket_yönü *= -1
 
         if self.hareketli_platform_karakter:
            player.rect.x += 2 * self.yatay_hareket_yönü 
+
+        #DİKEY HAREKETLİ
+        self.dikey_hareketli_platform.y += 2 * self.dikey_hareket_yönü
+        if self.dikey_hareketli_platform.top <= 50 or self.dikey_hareketli_platform.bottom >= 450:
+            self.dikey_hareket_yönü *= -1
+
 
     def draw (self, surface ):
 
@@ -96,6 +106,15 @@ class Level:
 
         hareketli_platform_resmi_boyut=pygame.transform.scale(hareketli_platform_resmi, (self.yatay_hareketli_platform.width, self.yatay_hareketli_platform.height))
         surface.blit(hareketli_platform_resmi_boyut, self.yatay_hareketli_platform.topleft)
+        
+        if self.active_evren == 1:
+            platform_image = self.platform_1
+        else:
+            platform_image = self.platform_2
+
+        scaled_vertical = pygame.transform.scale(platform_image, (self.dikey_hareketli_platform.width, self.dikey_hareketli_platform.height))
+        surface.blit(scaled_vertical, self.dikey_hareketli_platform.topleft)
+
         
         if self.door_frames:
             current_frame = self.door_frames[self.door_current_frame]

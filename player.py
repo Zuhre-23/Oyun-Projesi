@@ -17,17 +17,15 @@ class Player:
         self.is_rolling =False
         self.is_dead=False
        
-        
-
         folder ="animations//PNG"
         self.animations = {
             'idle' : load_images(f"{folder}/idle","idle",12),
             'run' : load_images(f"{folder}/run", "run" ,10),
             'jump' : load_images(f"{folder}/jump_full", "jump" ,22),
             'roll' : load_images(f"{folder}/roll", "roll",8),
-            'death' :load_images(f"{folder}/death" , "death", 19),                        
-         }
+            'death' :load_images(f"{folder}/death" , "death", 19),
 
+                    }
 
     def move_and_check_collisions(self,keys):
         dx = dy = 0
@@ -71,9 +69,6 @@ class Player:
             self.current_frame %= len(self.animations[anim])
         self.frame_timer = 0
 
-
-
-
     def draw(self, surface):
         anim = 'death' if self.is_dead else self.get_animation_state()
 
@@ -94,7 +89,8 @@ class Player:
         if self.is_running:
             return 'run'
         if self.is_dead:
-            return 'death'       
+            return 'death'
+        
         return 'idle'
     
     def die(self):
