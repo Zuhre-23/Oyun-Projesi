@@ -2,7 +2,7 @@ import pygame
 from animation_loader import load_images
 
 class Player:
-    def __innit__(self,x,y,level):
+    def __init__(self,x,y,level):
         self.rect=pygame.Rect(x,y,50,80)
         self.level=level
         self.current_frame=0
@@ -25,21 +25,9 @@ class Player:
             'run' : load_images(f"{folder}/run", "run" ,10),
             'jump' : load_images(f"{folder}/jump_full", "jump" ,22),
             'roll' : load_images(f"{folder}/roll", "roll",8),
-            'death' :load_imager(f"{folder}/death" , "death", 19),
+            'death' :load_images(f"{folder}/death" , "death", 19),
 
                     }
-    def update ()
-    
-
-
-
-
-
-
-
-
-
-
 
     def move_and_check_collisions(self,keys):
         dx = dy = 0
@@ -64,37 +52,13 @@ class Player:
         if not self.on_ground:
             self.jump_velocity += self.gravity
 
-
-
-    
-
-
-    def check_horizontal_collisions()
-
-
-
-
-
-
-
-
-
-    def check_vertical_collisions()
-
-
-
-
-
-
-
-
     def update_animation(self):
         self.frame_timer += 1
         if self.frame_timer >= 6:
             anim = self.get_animation_state()
             self.current_frame += 1
             if anim in ['roll', 'death'] and self.current_frame >= len(self.animations[anim]):
-                self.door_current_frame =0
+                self.current_frame =0
 
 
                 if anim == 'roll':
@@ -131,7 +95,7 @@ class Player:
         if self.is_dead:
             return 'death'
         
-        returun 'idle'
+        return 'idle'
     def die(self):
         if not self.is_dead:
             self.is_dead = True
