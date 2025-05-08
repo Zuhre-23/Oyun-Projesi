@@ -25,14 +25,9 @@ class Player:
             'run' : load_images(f"{folder}/run", "run" ,10),
             'jump' : load_images(f"{folder}/jump_full", "jump" ,22),
             'roll' : load_images(f"{folder}/roll", "roll",8),
-            'death' :load_images(f"{folder}/death" , "death", 19),
+            'death' :load_images(f"{folder}/death" , "death", 19),                        
+         }
 
-                    }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> efd38de814437b8fafc061a1996ffc3e79fba255
 
     def move_and_check_collisions(self,keys):
         dx = dy = 0
@@ -57,33 +52,7 @@ class Player:
         if not self.on_ground:
             self.jump_velocity += self.gravity
 
-<<<<<<< HEAD
-=======
 
-
-    
-
-
-    
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
->>>>>>> efd38de814437b8fafc061a1996ffc3e79fba255
     def update_animation(self):
         self.frame_timer += 1
         if self.frame_timer >= 6:
@@ -125,15 +94,9 @@ class Player:
         if self.is_running:
             return 'run'
         if self.is_dead:
-<<<<<<< HEAD
-            return 'death'
-        
-        return 'idle'
-=======
             return 'death'       
         return 'idle'
     
->>>>>>> efd38de814437b8fafc061a1996ffc3e79fba255
     def die(self):
         if not self.is_dead:
             self.is_dead = True
