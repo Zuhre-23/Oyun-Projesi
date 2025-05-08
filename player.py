@@ -139,6 +139,56 @@ class Player:
             self.frame_timer = 0
 
 
+class Enemy:
+    def __init__(self, x, y, sprite_path, frame_width, frame_height, num_frames, speed):
+        self.x = x
+        self.y = y
+        self.speed = speed
+        self.current_frame = 0
+        self.frame_timer = 0
+        self.direction = -1
+        self.flip = False
+
+        self.sprite_sheet = pygame.image.load(sprite_path).convert_alpha()
+        self.frames = self.load_frames(frame_width, frame_height, num_frames)
+        self.rect = pygame.Rect(self.x , self.y, frame_width, frame_height)
+
+    def load_frames(self, width, height, num_frames):
+        frames = []
+        for i in range(num_frames):
+            frame = self.sprite_sheet.subsurface(pygame.Rect(i * width, 0, width, height ))
+            frames.append(frame)
+        return frames
+
+    def update(self):
+        self.frame_timer += 1
+        if self.frame_timer >= 5:
+            self.current_frame = (self.current_frame + 1)% len(self.frames)
+            self.frame_timer = 0
+        
+        self.x += self.speed * self.direction
+
+        if self.x <=0:
+             self.direction = 1
+             self.flip = False
+        elif self.x + self.rect.width >= 1000:
+            self.direction = -1
+            self.flip = True
+
+        self.rect.topleft = (self.x, self.y)
+    
+    def draw(self, surface):
+        frame = self.frames[self.current_frame]
+        if self.flip:
+            frame = pygame.transform.flip(frame, True , False)
+        surface.blit(frame, (self.x, self.y))    
+
+
+
+
+
+
+
 
 
 
