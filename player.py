@@ -1,6 +1,7 @@
 import pygame
 from animation_loader import load_images
 
+
 class Player:
     def __init__(self,x,y,level):
         self.rect=pygame.Rect(x,y,50,80)
@@ -17,21 +18,31 @@ class Player:
         self.is_rolling =False
         self.is_dead=False
        
+        
+
         folder ="animations//PNG"
         self.animations = {
             'idle' : load_images(f"{folder}/idle","idle",12),
             'run' : load_images(f"{folder}/run", "run" ,10),
             'jump' : load_images(f"{folder}/jump_full", "jump" ,22),
             'roll' : load_images(f"{folder}/roll", "roll",8),
-            'death' :load_images(f"{folder}/death" , "death", 19),
+            'death' :load_images(f"{folder}/death" , "death", 19),                        
+         }
 
-                    }
+    def update(self, keys):
+        if self.is_dead:
+            self.update_animation()
+            return
+        
+        self.is_running = keys[pygame.K_LEFT] or keys [pygame.K_RIGHT]
+        self.hareket_etme_ve_carpısma_kontrolu(keys)
+        self.update_animation()
 
-    def move_and_check_collisions(self,keys):
+    def hareket_etme_ve_carpısma_kontrolu(self,keys):
         dx = dy = 0
         if keys[pygame.K_LEFT]:
             dx = -5
-            self.looking_left_True
+            self.looking_left = True
 
         elif keys[pygame.K_RIGHT]:
             dx = 5
@@ -50,6 +61,39 @@ class Player:
         if not self.on_ground:
             self.jump_velocity += self.gravity
 
+        self.rect.x += dx
+        self.yatay_carpısma_kontrolü(dx)
+
+        self.rect.y += dy
+        self.dikey_carpısma_kontrolü(dy)
+    
+    def yatay_carpısma_kontrolü(self, dx):
+        for platform in self.level.get_active_platforms() + [self.level.yatay_hareketli_platform , self.level.dikey_hareketli_platform]:
+            if self.rect.colliderect(platform):
+                
+                if dx > 0:
+                    self.rect.right = platform.left
+
+                elif dx < 0:
+                    self.rect.left = platform.right
+    
+    def dikey_carpısma_kontrolü(self, dy):
+        self.on_ground = False
+        self.level.hareketli_platform_karakter = False
+
+        for platform in self.level.get_active_platforms() +[self.level.yatay_hareketli_platform , self.level.dikey_hareketli_platform]:
+            if self.rect.colliderect(platform):
+                if dy > 0:
+                    self.rect.bottom = platform.top
+                    self.jump_velocity = 0
+                    self.on_ground = True
+                    self.is_jumping = False
+                    if platform == self.level.yatay_hareketli_platform:
+                        self.level.hareketli_platform_karakter = True
+
+                elif dy < 0:
+                    self.rect.top = platform.bottom
+                    self.jump_velocity = 0
 
     def update_animation(self):
         self.frame_timer += 1
@@ -58,16 +102,17 @@ class Player:
             self.current_frame += 1
             if anim in ['roll', 'death'] and self.current_frame >= len(self.animations[anim]):
                 self.current_frame =0
-
-
-                if anim == 'roll':
+                if anim == 'roll':                    
                     self.is_rolling = False
                 if anim == 'death':
                     self.is_dead = True
         
-        else:
-            self.current_frame %= len(self.animations[anim])
-        self.frame_timer = 0
+            else:
+                self.current_frame %= len(self.animations[anim])
+            self.frame_timer = 0
+
+
+
 
     def draw(self, surface):
         anim = 'death' if self.is_dead else self.get_animation_state()
@@ -89,8 +134,7 @@ class Player:
         if self.is_running:
             return 'run'
         if self.is_dead:
-            return 'death'
-        
+            return 'death'       
         return 'idle'
     
     def die(self):

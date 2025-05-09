@@ -95,6 +95,8 @@ class Game:
         while True:
             self.menu_acik = True
             self.menu_loop()
+            self.level=Level()
+            self.player = Player(350,350,self.level) 
             oyun_acik = True
             while oyun_acik :
                 self.clock.tick(FPS)
@@ -109,8 +111,11 @@ class Game:
                         
                 self.pencere.blit(self.arkaplan_boyut,(0,0))
                 self.level.update_door_animation()
-
+                keys = pygame.key.get_pressed()
+                
+                self.player.update(keys)
                 self.level.update(self.player)
+                
 
                 self.draw()
     
@@ -122,4 +127,5 @@ class Game:
         
         self.player.draw(self.pencere)
         self.level.draw(self.pencere)
+        
         pygame.display.update()
