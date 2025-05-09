@@ -2,6 +2,7 @@ import pygame
 import math
 from level import Level
 from player import Player
+from player import Enemy
 GENISLIK , YUKSEKLIK = 1000,700
 FPS=60
 
@@ -24,6 +25,8 @@ class Game:
         self.level=Level()
         self.player = Player(50, 600, self.level)
         self.menu_acik = True
+        self.enemy = Enemy(1000, 200, "flight.png", 150, 150, 8 , 3)
+        
 
     def menu_loop(self):
         secenekler = ["Oyunu Başlat","Çıkış"]
@@ -116,7 +119,7 @@ class Game:
                 self.player.update(keys)
                 self.level.update(self.player)
                 
-
+                self.enemy.update()
                 self.draw()
     
     def draw(self):
@@ -124,7 +127,8 @@ class Game:
             self.pencere.blit(self.arkaplan_boyut, (0, 0))
         else:
             self.pencere.blit(self.arkaplan_2_boyut, (0, 0))
-        
+            
+        self.enemy.draw(self.pencere)
         self.player.draw(self.pencere)
         self.level.draw(self.pencere)
         
