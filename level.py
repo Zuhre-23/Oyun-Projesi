@@ -4,10 +4,13 @@ from animation_loader import load_images
 class Level:
     def __init__(self):
         self.evren1=[
-            pygame.Rect(100,500,100,100),
-            pygame.Rect(180,500,100,100),
-            pygame.Rect(260,500,100,100),
-           
+            pygame.Rect(100,650,120,55),
+            pygame.Rect(200,650,120,55),
+            pygame.Rect(300,650,120,55),
+            pygame.Rect(400,650,120,55),
+            pygame.Rect(500,650,120,55),
+            pygame.Rect(600,650,120,55),
+            pygame.Rect(700,650,120,55)
         ]
         self.evren2=[
             pygame.Rect(340,300,100,100),
@@ -15,7 +18,10 @@ class Level:
         ]
         self.gems = [
             pygame.Rect(100,500,32,32),
-            pygame.Rect(100,600,32,32)
+            pygame.Rect(200,500,32,32),
+            pygame.Rect(300,500,32,32),
+            pygame.Rect(400,500,32,32),
+            pygame.Rect(500,600,32,32)
         ]
 
         self.platform_1 = pygame.image.load("Platform.PNG")
@@ -29,12 +35,17 @@ class Level:
         self.dikey_hareket_yönü = 1     
 
 
-        self.door = pygame.Rect(800,450,150,300)
+        self.door = pygame.Rect(900,550,150,300)
         self.door_frames = load_images("animations//door","portal1_frame",6)
         self.door_current_frame = 0
         self.door_frame_timer = 0
 
         self.gem = pygame.image.load("gem.PNG")
+        self.toplanan_gem_sayisi = 0
+        self.toplam_gem_sayisi = 5
+
+        self.game_over = False
+        self.won = False
         
 
     def evren_degistir(self):
@@ -75,6 +86,19 @@ class Level:
         self.dikey_hareketli_platform.y += 2 * self.dikey_hareket_yönü
         if self.dikey_hareketli_platform.top <= 50 or self.dikey_hareketli_platform.bottom >= 450:
             self.dikey_hareket_yönü *= -1
+        if player.rect.colliderect(self.dikey_hareketli_platform):
+            if player.rect.bottom <= self.dikey_hareketli_platform.top+10:
+                player.rect.y +=2*self.dikey_hareket_yönü
+
+
+    def temas_kontrolu(self, player):
+        for gem in self.gems[:]:
+            if player.rect.colliderect(gem):
+                self.gems.remove(gem)
+                self.toplanan_gem_sayisi += 1
+        if player.rect.colliderect(self.door) and self.toplanan_gem_sayisi >= 5:
+            self.game_over =True
+            self.won = True
 
 
     def draw (self, surface ):

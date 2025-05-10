@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 from level import Level
 from player import Player
 from player import Enemy
@@ -24,9 +25,11 @@ class Game:
 
         self.level=Level()
         self.player = Player(50, 600, self.level)
-        self.menu_acik = True
         self.enemy = Enemy(1000, 200, "flight.png", 150, 150, 8 , 3)
-        
+
+        self.menu_acik = True
+        self.game_over = True
+        self.death_timer = 0
 
     def menu_loop(self):
         secenekler = ["Oyunu Başlat","Çıkış"]
@@ -101,6 +104,8 @@ class Game:
             self.level=Level()
             self.player = Player(350,350,self.level) 
             oyun_acik = True
+            self.game_over = False
+
             while oyun_acik :
                 self.clock.tick(FPS)
                 for event in pygame.event.get():
@@ -111,6 +116,60 @@ class Game:
                             self.level.evren_degistir()
                         elif event.key == pygame.K_ESCAPE:
                             oyun_acik=False
+                
+                if self.level.won:
+                    panel = pygame.Surface((500,120))
+                    panel.set_alpha(100)
+                    panel.fill((0,0,0))
+                    self.pencere.blit(panel,(GENISLIK//2 - 250, YUKSEKLIK//2 - 60,500, 120))
+                    pygame.draw.rect(self.pencere, (255, 215, 0), (GENISLIK // 2 - 250, YUKSEKLIK // 2 - 60, 500, 120),5)
+
+                    win_text = "YOU WIN!"
+                    font = pygame.font.SysFont("Courier New",80, bold=True)
+                    golge = font.render(win_text,True,(0,0,0))
+                    self.pencere.blit(golge, (GENISLIK // 2 - golge.get_width() // 2 + 4, YUKSEKLIK // 2 - 36 + 4))
+                    text = font.render(win_text, True, (255, 215, 0)) 
+                    self.pencere.blit(text, (GENISLIK // 2 - text.get_width() // 2, YUKSEKLIK // 2 - 36))
+
+                    for i in range(100):
+                        x = random.randint(0, GENISLIK)
+                        y = random.randint(0, YUKSEKLIK)
+                        pygame.draw.circle(self.pencere, (255, 255, 0), (x, y), 2)
+
+                    pygame.display.update()
+                    pygame.time.wait(5000)
+                    break
+                
+                if self.level.game_over or self.player.rect.top >= YUKSEKLIK:
+                    self.player.is_dead = True
+
+                if self.player.is_dead:
+                    self.player.update(pygame.key.get_pressed())
+                    self.level.update_door_animation()
+                    self.draw()
+                    self.death_timer += 1
+
+                    karartma = pygame.Surface((GENISLIK, YUKSEKLIK))
+                    karartma.set_alpha(180)
+                    karartma.fill((0, 0, 0))
+                    self.pencere.blit(karartma, (0, 0))
+
+                    panel_x = GENISLIK // 2 - 250
+                    panel_y = YUKSEKLIK // 2 - 60
+                    pygame.draw.rect(self.pencere, (0, 0, 0), (panel_x, panel_y, 500, 120))
+                    pygame.draw.rect(self.pencere, (255, 0, 0), (panel_x, panel_y, 500, 120), 5)
+
+                    yazi = self.font.render("He is dead", True, (255, 0, 0))
+                    gölge = self.font.render("He is dead", True, (0, 0, 0))
+                    x = GENISLIK // 2 - yazi.get_width() // 2
+                    y = YUKSEKLIK // 2 - yazi.get_height() // 2
+                    self.pencere.blit(gölge, (x + 3, y + 3))
+                    self.pencere.blit(yazi, (x, y))
+                    pygame.display.update()
+                    if self.death_timer > FPS * 2:
+                        break
+                    continue
+
                         
                 self.pencere.blit(self.arkaplan_boyut,(0,0))
                 self.level.update_door_animation()
@@ -118,6 +177,7 @@ class Game:
                 
                 self.player.update(keys)
                 self.level.update(self.player)
+                self.level.temas_kontrolu(self.player)
                 
                 self.enemy.update()
                 self.draw()
