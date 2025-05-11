@@ -180,7 +180,18 @@ class Game:
                     self.player.rect.x += 2* self.level.yatay_hareket_yönü
                 self.level.update(self.player)
                 self.level.temas_kontrolu(self.player)
-                
+
+                player_center = pygame.Vector2(self.player.rect.center)
+                enemy_center = pygame.Vector2(self.enemy.rect.center)
+                mesafe = player_center.distance_to(enemy_center)
+
+                if mesafe < 60 and not self.player.is_dead:
+                    self.player.die()
+
+                if self.player.rect.top >= YUKSEKLIK:
+                    self.game_over = True
+
+
                 self.enemy.update()
                 self.draw()
     
