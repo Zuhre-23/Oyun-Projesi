@@ -4,24 +4,53 @@ from animation_loader import load_images
 class Level:
     def __init__(self):
         self.evren1=[
-            pygame.Rect(100,650,120,55),
-            pygame.Rect(200,650,120,55),
-            pygame.Rect(300,650,120,55),
-            pygame.Rect(400,650,120,55),
-            pygame.Rect(500,650,120,55),
-            pygame.Rect(600,650,120,55),
-            pygame.Rect(700,650,120,55)
+            pygame.Rect(950,225,40,30),
+            pygame.Rect(900,300,40,30),
+            pygame.Rect(250,400,60,40),
+            pygame.Rect(825,450,200,25)
         ]
         self.evren2=[
-            pygame.Rect(340,300,100,100),
-            pygame.Rect(420,300,100,100),
+            pygame.Rect(150,300,60,40),
+            pygame.Rect(840,300,50,50),
+            pygame.Rect(880,150,50,50),
+            pygame.Rect(920,150,50,50),
+            pygame.Rect(960,150,50,50),
+            pygame.Rect(350,150,60,40),
+            pygame.Rect(725,150,60,40),
+            pygame.Rect(825,450,20,225),
+        ]
+        self.zemin_platformları=[
+            pygame.Rect(225, 150, 50, 50),
+            pygame.Rect(265, 150, 50, 50),
+            pygame.Rect(305, 150, 50, 50),   
+            pygame.Rect(345, 150, 50, 50),
+            pygame.Rect(385, 150, 50, 50),          
+            pygame.Rect(425, 150, 50, 50),
+            pygame.Rect(560, 150, 50, 50),
+            pygame.Rect(600, 150, 50, 50),
+            pygame.Rect(640, 150, 50, 50),
+            pygame.Rect(680, 150, 50, 50),
+            pygame.Rect(720, 150, 50, 50),
+            pygame.Rect(760, 150, 50, 50),
+            pygame.Rect(800, 150, 50, 50),
+            pygame.Rect(0, 650, 122, 55),
+            pygame.Rect(100, 650, 120, 55),
+            pygame.Rect(200, 650, 120, 55),
+            pygame.Rect(300, 650, 120, 55),
+            pygame.Rect(400, 650, 120, 55),
+            pygame.Rect(500, 650, 120, 55),
+            pygame.Rect(600, 650, 120, 55),
+            pygame.Rect(700, 650, 120, 55),
+            pygame.Rect(800, 650, 120, 55),
+            pygame.Rect(900, 650, 120, 55),
+            pygame.Rect(1000, 650, 120, 55),
         ]
         self.gems = [
-            pygame.Rect(100,500,32,32),
-            pygame.Rect(200,500,32,32),
-            pygame.Rect(300,500,32,32),
-            pygame.Rect(400,500,32,32),
-            pygame.Rect(500,600,32,32)
+            pygame.Rect(360,315,32,32),
+            pygame.Rect(55,55,32,32),
+            pygame.Rect(680,100,32,32),
+            pygame.Rect(735,310,32,32),
+            pygame.Rect(900,260,32,32)
         ]
 
         self.platform_1 = pygame.image.load("Platform.PNG")
@@ -31,7 +60,7 @@ class Level:
         self.yatay_hareketli_platform =pygame.Rect(500, 550, 120, 20)
         self.yatay_hareket_yönü = 1
         self.hareketli_platform_karakter =False
-        self.dikey_hareketli_platform = pygame.Rect(80,50,50,50) 
+        self.dikey_hareketli_platform = pygame.Rect(50,100,50,50) 
         self.dikey_hareket_yönü = 1     
 
 
@@ -59,7 +88,7 @@ class Level:
             aktifler = self.evren1
         else:
             aktifler = self.evren2
-        return aktifler
+        return aktifler+ self.zemin_platformları
     
     def get_passive_platforms(self):
         if self.active_evren == 1:
@@ -138,7 +167,14 @@ class Level:
 
         scaled_vertical = pygame.transform.scale(platform_image, (self.dikey_hareketli_platform.width, self.dikey_hareketli_platform.height))
         surface.blit(scaled_vertical, self.dikey_hareketli_platform.topleft)
-
+        
+        for rect in self.zemin_platformları:
+            if self.active_evren == 1:
+                image = self.platform_1
+            else:
+                image = self.platform_2
+            scaled = pygame.transform.scale(image, (rect.width, rect.height))
+            surface.blit(scaled, rect.topleft)
         
         if self.door_frames:
             current_frame = self.door_frames[self.door_current_frame]
