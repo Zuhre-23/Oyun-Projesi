@@ -10,13 +10,13 @@ class Level:
             pygame.Rect(825,450,200,25)
         ]
         self.evren2=[
-            pygame.Rect(150,300,60,40),
-            pygame.Rect(840,300,50,50),
+            pygame.Rect(150,350,60,40),
+            pygame.Rect(840,150,50,50),
             pygame.Rect(880,150,50,50),
             pygame.Rect(920,150,50,50),
             pygame.Rect(960,150,50,50),
-            pygame.Rect(350,150,60,40),
-            pygame.Rect(725,150,60,40),
+            pygame.Rect(350,450,60,40),
+            pygame.Rect(725,350,60,40),
             pygame.Rect(825,450,20,225),
         ]
         self.zemin_platformları=[
@@ -105,7 +105,7 @@ class Level:
     def update(self,player):
         #YATAY HAREKETLİ
         self.yatay_hareketli_platform.x += 2 * self.yatay_hareket_yönü
-        if self.yatay_hareketli_platform.left <= 100 or self.yatay_hareketli_platform.right >= 700:
+        if self.yatay_hareketli_platform.left <= 50 or self.yatay_hareketli_platform.right >= 650:
             self.yatay_hareket_yönü *= -1
 
         if self.hareketli_platform_karakter:

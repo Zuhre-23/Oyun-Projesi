@@ -10,7 +10,7 @@ FPS=60
 class Game:
     def __init__(self):
         self.pencere = pygame.display.set_mode((GENISLIK, YUKSEKLIK))
-        pygame.display.set_caption("OYUN")
+        pygame.display.set_caption("Game")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Courier New" ,50, bold=True)
 
@@ -32,7 +32,7 @@ class Game:
         self.death_timer = 0
 
     def menu_loop(self):
-        secenekler = ["Oyunu Başlat","Çıkış"]
+        secenekler = ["Start","Exit"]
         secili_index =0
         while self.menu_acik :
             self.clock.tick(FPS)
@@ -176,6 +176,8 @@ class Game:
                 keys = pygame.key.get_pressed()
                 
                 self.player.update(keys)
+                if self.level.hareketli_platform_karakter and self.player.on_ground:
+                    self.player.rect.x += 2* self.level.yatay_hareket_yönü
                 self.level.update(self.player)
                 self.level.temas_kontrolu(self.player)
                 
