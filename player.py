@@ -1,7 +1,6 @@
 import pygame
 from animation_loader import load_images
 
-
 class Player:
     def __init__(self,x,y,level):
         self.rect=pygame.Rect(x,y,50,80)
@@ -18,8 +17,6 @@ class Player:
         self.is_rolling =False
         self.is_dead=False
        
-        
-
         folder ="animations//PNG"
         self.animations = {
             'idle' : load_images(f"{folder}/idle","idle",12),
@@ -111,9 +108,6 @@ class Player:
                 self.current_frame %= len(self.animations[anim])
             self.frame_timer = 0
 
-
-
-
     def draw(self, surface):
         anim = 'death' if self.is_dead else self.get_animation_state()
 
@@ -124,7 +118,6 @@ class Player:
         
         pos = (self.rect.centerx - frame.get_width() // 2, self.rect.bottom - frame.get_height())
         surface.blit(frame, pos)
-
 
     def get_animation_state(self):
         if self.is_rolling:
@@ -142,7 +135,6 @@ class Player:
             self.is_dead = True
             self.current_frame = 0
             self.frame_timer = 0
-
 
 class Enemy:
     def __init__(self, x, y, sprite_path, frame_width, frame_height, num_frames, speed):
@@ -187,43 +179,3 @@ class Enemy:
         if self.flip:
             frame = pygame.transform.flip(frame, True , False)
         surface.blit(frame, (self.x, self.y))    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
-
-                    
-
-
-
-
-
-
-
-
-
-
-
-
-
-         

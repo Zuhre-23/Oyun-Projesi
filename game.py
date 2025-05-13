@@ -96,7 +96,6 @@ class Game:
                 self.pencere.blit(yazi,(x,y))
             pygame.display.update()
 
-
     def run(self):
         while True:
             self.menu_acik = True
@@ -169,8 +168,7 @@ class Game:
                     if self.death_timer > FPS * 2:
                         break
                     continue
-
-                        
+  
                 self.pencere.blit(self.arkaplan_boyut,(0,0))
                 self.level.update_door_animation()
                 keys = pygame.key.get_pressed()

@@ -131,7 +131,6 @@ class Level:
 
 
     def draw (self, surface ):
-
         saydam_surface=pygame.Surface(surface.get_size(), pygame.SRCALPHA)
         saydam_surface.set_alpha(100)
 
@@ -182,4 +181,3 @@ class Level:
 
         for gem in self.gems:
             surface.blit(self.gem,gem.topleft)
-        
