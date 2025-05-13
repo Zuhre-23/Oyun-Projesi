@@ -55,13 +55,13 @@ class Game:
             self.pencere.blit(self.arkaplan_boyut,(0,0))
             self.pencere.blit(self.karakter_resmi,(GENISLIK//2 - self.karakter_resmi.get_width()//2, 150))
 
-            baslik_metni = "2D Platform Oyunu"
+            baslik_metni = "FLIPSIDE"
             baslik_font = pygame.font.SysFont("Courier New",70, bold= True)
             baslik_renk = (255,215,0)
             baslik = baslik_font.render(baslik_metni,True,(255,255,0))
             gölge = baslik_font.render(baslik_metni, True,(0,0,0))
 
-            dalga_y = 60+ math.sin(pygame.time.get_ticks()*0.002)*10
+            dalga_y = 60+ math.sin(pygame.time.get_ticks()*0.005)*10
             x = GENISLIK//2 - baslik.get_width()//2
             y = int(dalga_y)
 
@@ -176,8 +176,14 @@ class Game:
                 keys = pygame.key.get_pressed()
                 
                 self.player.update(keys)
+                if self.player.rect.left < 0:
+                    self.player.rect.left = 0
+                if self.player.rect.right > GENISLIK:
+                    self.player.rect.right = GENISLIK
+
                 if self.level.hareketli_platform_karakter and self.player.on_ground:
                     self.player.rect.x += 2* self.level.yatay_hareket_yönü
+                
                 self.level.update(self.player)
                 self.level.temas_kontrolu(self.player)
 
@@ -187,10 +193,6 @@ class Game:
 
                 if mesafe < 60 and not self.player.is_dead:
                     self.player.die()
-
-                if self.player.rect.top >= YUKSEKLIK:
-                    self.game_over = True
-
 
                 self.enemy.update()
                 self.draw()
